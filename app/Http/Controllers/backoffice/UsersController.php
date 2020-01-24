@@ -130,7 +130,7 @@ class UsersController extends Controller
         $usuario->save(); 
 
         return redirect()->route('usuarios.index');
-        
+        //el trabajo lo llevo al 75%
     }
 
    
