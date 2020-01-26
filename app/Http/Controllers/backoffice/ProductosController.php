@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\App;
+//use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Support\Facades\View;
 use App\Mail\ProductoCreado;
 use App\Producto;
@@ -25,7 +26,7 @@ class ProductosController extends Controller
         $categorias = Categoria::all();
         $productos = Producto::nombre($request->nombre)
                     ->categoria($request->categoria)
-                    ->precio($request->desde,$request->hasta)->get();
+                    ->precio($request->desde,$request->hasta)->paginate(1);
         return view('backoffice.productos.index',compact('productos','categorias'));
     }
 
@@ -165,6 +166,23 @@ class ProductosController extends Controller
         return redirect()->route('productos.index');
     }
 
+    public function inactivar($id){
+        $producto = Producto::find($id);
+        $producto->estado_id = 3;
+        $producto->save();
+        return redirect()->route('productos.index')->with('status','Inactivo'.$producto->nombre.' inactivado con éxito!');
+    }
+
+    /**
+     * Activa un usuario especifico
+     */
+    public function activar($id){
+        $producto = Producto::find($id);
+        $producto->estado_id = 1;
+        $producto->save();
+        return redirect()->route('productos.index')->with('status','Activo'.$producto->nombre.' Activado con éxito!');
+    }
+
     public function destroy($id)
     {
         //
@@ -173,33 +191,17 @@ class ProductosController extends Controller
         return redirect()->route('productos.index')->with('status','Producto '.$producto->nombre.' eliminado con éxito!');
     }
 
+
+    //Funcion para Exportar a PDF
+
+
+    //funcion para Exportar a Excel
+    public function exportarExcel(){
+
+
+    }
+
     
 
-    /**
-     * Inactiva un usuario especifico
-     */
-    public function inactivar($id){
-        $usuario = User::find($id);
-        $usuario->estado_id = 3;
-        $usuario->save();
-        return redirect()->route('usuario.index')->with('status','Usuario'.$usuario->nombre.' inactivado con éxito!');
-    }
-
-    /**
-     * Activa un usuario especifico
-     */
-    public function activar($id){
-        $usuario = User::find($id);
-        $usuario->estado_id = 1;
-        $usuario->save();
-        return redirect()->route('usuario.index')->with('status','Activado '.$usuario->nombre.' con éxito!');
-    }
-
-    //Funcion  para esportar a PDF
-    /*
-    public function exportarPDF(){
-        $dpf = App::make('dompdf.wrapper');
-        $vista = 
-    }
-    */
+   
 }

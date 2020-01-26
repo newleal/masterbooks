@@ -34,21 +34,21 @@
                 	</thead>
                 	<tbody>
                 		@foreach($usuarios as $usuario)
-	                		<tr>
+	                		<tr @if($usuario->estado_id>1) class="table-danger" @endif>
 	                			<td>{{$usuario->nombre}}</td>
 	                			<td>{{$usuario->apellido}}</td>
 	                			<td>{{$usuario->email}}</td>
 	                			<td>{{$usuario->telefono}}</td>
 	                			<td>{{$usuario->direccion}}</td>
-	                			<td>{{$usuario->ciudad_id}}</td>
-	                			<td>{{$usuario->genero_id}}</td>
+	                			<td >{{$usuario->ciudad->nombre}}</td>
+	                			<td >{{$usuario->genero_id}}</td>
 	                			<td>{{$usuario->estado_id}}</td>
 	                			<td>{{$usuario->perfil_id}}</td>
 	                			
 	                			<td>
                           <a class="btn btn-warning" href="{{ route('usuarios.edit',$usuario->id) }}"><i class="fas fa-edit"></i></a>
-                          @if($usuario->estado_id<3)
-                            <a class="btn btn-danger" href="#"><i class="fas fa-trash"></i></a>
+                          @if($usuario->estado_id<2)
+                            <a class="btn btn-danger" href="{{ route('usuarios.inactivar',$usuario->id) }}"><i class="fas fa-trash"></i></a>
                           @else
                             <a class="btn btn-success" href="{{ route('usuarios.activar',$usuario->id) }}"><i class="fas fa-check"></i></a>
                           @endif

@@ -18,22 +18,27 @@
               	<div class="text-right">
               		<a class="btn btn-success" href="{{ route('productos.create') }}"><i class="fas fa-plus"></i></a>
                   <a class="btn btn-primary" href="{{ route('productos.pdf') }}"><i class="fas fa-file-pdf"></i></a>
+                  <!--Exportar a Excel</!-->
+                <a class="btn btn-info" href=""><i class="fas fa-file-excel"></i></a>
               	</div>
+
+
+
               	<!--FILTROS</!-->
                 <?php  
                  //Definir las variables para recordar que se digito en las cajas de filtro</!-->
                  $nombre = null; $desde=null; $hasta=null;$categoria_id=null;
                  if ($_GET){
-                   if ($_GET['nombre']) {
+                   if (isset($_GET['nombre'])) {
                      $nombre = $_GET['nombre'];
                    }
-                   if ($_GET['desde']) {
+                   if (isset($_GET['desde'])) {
                      $desde = $_GET['desde'];
                    }
-                   if ($_GET['hasta']) {
+                   if (isset($_GET['hasta'])) {
                      $hasta = $_GET['hasta'];
                    }
-                   if ($_GET['categoria_id']) {
+                   if (isset($_GET['categoria_id'])) {
                      $categoria_id = $_GET['categoria_id'];
                    }
                  }
@@ -93,8 +98,9 @@
 	                		</tr>
 	                	@endforeach
                 	</tbody>
-                </table>             	
-
+                </table> 
+                <!--Codigo par ala paginacion y para buscar por el filtro realizado</!-->            	
+                {{ $productos->appends(['nombre'=>$nombre,'desde'=>$desde,'hasta'=>$hasta,'categoria_id'=>$categoria_id])->links()}}
               </div>
             </div>
           </div>

@@ -14,9 +14,10 @@ class UsersController extends Controller
 {
     
     public function index()
-    {
+    {   
+        $ciudades = Ciudad::all();
         $usuarios = User::all();
-        return view('backoffice.usuarios.index',compact('usuarios'));
+        return view('backoffice.usuarios.index',compact('usuarios','ciudades'));
 
     }
 
@@ -131,7 +132,36 @@ class UsersController extends Controller
 
         return redirect()->route('usuarios.index');
         //el trabajo lo llevo al 75%
+        //Creo subida a git de MasterBooks
     }
+
+     /**
+     * Inactiva un usuario especifico
+     */
+    public function inactivar($id){
+        $usuario = User::find($id);
+        $usuario->estado_id = 2;
+        $usuario->save();
+        return redirect()->route('usuarios.index')->with('status','Usuario'.$usuario->nombre.' inactivado con éxito!');
+    }
+
+    /**
+     * Activa un usuario especifico
+     */
+    public function activar($id){
+        $usuario = User::find($id);
+        $usuario->estado_id = 1;
+        $usuario->save();
+        return redirect()->route('usuarios.index')->with('status','Activado '.$usuario->nombre.' con éxito!');
+    }
+
+    //Funcion  para esportar a PDF
+    /*
+    public function exportarPDF(){
+        $dpf = App::make('dompdf.wrapper');
+        $vista = 
+    }
+    */
 
    
     public function destroy($id)
@@ -139,6 +169,6 @@ class UsersController extends Controller
         //
         $usuario = User::find($id);
         $usuario->delete();
-        return redirect()->route('usuarios.index')->with('status','Usuario '.$usuario->nombre.' eliminado con éxito!');
+        return redirect()->route('usuarios.index');
     }
 }

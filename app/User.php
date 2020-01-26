@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Relacion con el modelo Ciudad
+    public function ciudad(){
+        return $this-> belongsTo('App\Ciudad');
+    }
 }
